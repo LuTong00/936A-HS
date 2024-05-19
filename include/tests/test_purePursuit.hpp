@@ -4,6 +4,8 @@
 #include <autonomous/purePursuit.hpp>
 #include <cstdio>
 
+// https://www.desmos.com/calculator/ah4ml1u5gq
+
 void test_purePursuit() {
     std::vector<double> x = {3.1, 4.1, 5.9, 2.6, 5.3};
     std::vector<double> y = {5.8, 9.7, 9.3, 2.3, 8.4};

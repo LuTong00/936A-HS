@@ -15,6 +15,7 @@ Point PurePursuit::get_target(double x_bot, double y_bot) {
     // Solve for the intersection between a circle and a line segment; iterate in reverse
     for (int i = path.points.size() - 1; i > 0; --i) {
         double x1, y1, x2, y2;
+        bool p1_valid = false, p2_valid = false;
         // Retrieve the line in slope-intercept form y=mx+b
         if (path.points[i].x == path.points[i - 1].x) {
             // Deal with the case where the line is vertical
@@ -26,6 +27,15 @@ Point PurePursuit::get_target(double x_bot, double y_bot) {
             x1 = x2 = path.points[i].x;
             y1 = y_bot + sqrt(determinant);
             y2 = y_bot - sqrt(determinant);
+            // Determine whether the found intersection points are valid (fall between the bounding points)
+            if ((path.points[i - 1].y <= y1 and y1 <= path.points[i].y) or 
+                (path.points[i].y <= y1 and y1 <= path.points[i - 1].y)) {
+                p1_valid = true;
+            }
+            if ((path.points[i - 1].y <= y2 and y2 <= path.points[i].y) or 
+                (path.points[i].y <= y2 and y2 <= path.points[i - 1].y)) {
+                p2_valid = true;
+            }
         } else {
             // Deal with the case where the line is not vertical
             double m = (path.points[i].y - path.points[i - 1].y) / (path.points[i].x - path.points[i - 1].x);
@@ -44,14 +54,15 @@ Point PurePursuit::get_target(double x_bot, double y_bot) {
             y1 = m * x1 + b;
             x2 = (-B - sqrt(determinant)) / (A * 2.0);
             y2 = m * x2 + b;
-        }
-        // Determine whether the found intersection points are valid (fall between the bounding points)
-        bool p1_valid = false, p2_valid = false;
-        if (path.points[i - 1].x <= x1 and x1 <= path.points[i].x) {
-            p1_valid = true;
-        }
-        if (path.points[i - 1].x <= x2 and x2 <= path.points[i].x) {
-            p2_valid = true;
+            // Determine whether the found intersection points are valid (fall between the bounding points)
+            if ((path.points[i - 1].x <= x1 and x1 <= path.points[i].x) or 
+                (path.points[i].x <= x1 and x1 <= path.points[i - 1].x)) {
+                p1_valid = true;
+            }
+            if ((path.points[i - 1].x <= x2 and x2 <= path.points[i].x) or 
+                (path.points[i].x <= x2 and x2 <= path.points[i - 1].x)) {
+                p2_valid = true;
+            }
         }
         if (p1_valid and p2_valid) {
             // Both points are valid; return the point closer to path.points[i]
@@ -95,7 +106,7 @@ std::pair<double, double> PurePursuit::get_relative_steering(double x_bot, doubl
     double left_steering = central_radius - width_bot * 0.5; 
     double right_steering = central_radius + width_bot * 0.5;
     double scale = 100.0 / (left_steering + right_steering);
-    if (sine < 0) {
+    if (cos(alpha) < 0) {
         scale = -scale;
     }
     return std::make_pair(left_steering * scale, right_steering * scale);
