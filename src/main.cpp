@@ -58,15 +58,15 @@ int main() {
     // //     brain.Screen.print("(%.5f, %.5f) heading %.5f (iteration %d)", odom.x(), odom.y(), odom.rotation(), iter);
     // //     vex::this_thread::sleep_for(1000);
     // // }
-    std::vector<double> x = {0, 40, 60, 0}, y = {0, 20, 60, 40};
+    std::vector<double> x = {0, -40, -80, -120, -160, -200}, y = {0, 10, -10, 10, -10, 10};
     Path path(x, y, 50);
     PurePursuit pursuit(path, 12.5);
     iter = 0;
     while (true) {
         auto steering = pursuit.get_relative_steering(odom.x(), odom.y(), odom.rotation(), 32.2);
         auto target = pursuit.get_target(odom.x(), odom.y());
-        left.spin(vex::fwd, 0.2 * steering.first, vex::pct);
-        right.spin(vex::fwd, 0.2 * steering.second, vex::pct);
+        left.spin(vex::fwd, 0.5 * steering.first, vex::pct);
+        right.spin(vex::fwd, 0.5 * steering.second, vex::pct);
         vex::this_thread::sleep_for(1);
         if ((iter++) % 250 == 0) {
             brain.Screen.clearScreen();
