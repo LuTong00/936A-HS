@@ -46,4 +46,6 @@ void test_matrix() {
     print(identity_matrix);
 }
 
+#undef print
+
 #endif
