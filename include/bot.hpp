@@ -5,6 +5,7 @@
 #include <autonomous/abstractMotorGroup.hpp>
 #include <autonomous/odometryDevice.hpp>
 #include <autonomous/purePursuit.hpp>
+#include <autonomous/pid.hpp>
 #include <pathing/path.hpp>
 #include <initializer_list>
 
@@ -68,59 +69,40 @@ public:
      * @param x The x-coordinates
      * @param y The y-coordinates
      * @param tolerance The distance tolerance for the path (ending condition)
+     * @param speed_factor The speed factor for the movement
      * @param num_points The number of points to interpolate
     */
-    void follow_path(std::vector<double> x, std::vector<double> y, double tolerance, int num_points = 50);
+    void follow_path(std::vector<double> x, std::vector<double> y, double tolerance, double speed_factor = 1.0, int num_points = 50);
 
     /**
      * @brief Follow the given path
      * @param path The path object to follow
+     * @param tolerance The distance tolerance for the path (ending condition)
+     * @param speed_factor The speed factor for the movement
     */
-    void follow_path(Path path, double tolerance = 5.0);
+    void follow_path(Path path, double tolerance = 5.0, double speed_factor = 1.0);
 
     /**
      * @brief Turn to the given angle
      * @param angle The angle to turn to, in radians
+     * @param tolerance The angle tolerance for the path, in radians (ending condition)
     */
-    void turn_to(double angle);
+    void turn_to(double angle, double tolerance = 0.01);
 
     /**
      * @brief Turn by the given angle
      * @param angle The angle to turn by, in radians
+     * @param tolerance The angle tolerance for the path, in radians (ending condition)
     */
-    void turn(double angle);
+    void turn(double angle, double tolerance = 0.01);
+
+    /**
+     * @brief Move the robot by the given distance
+     * @param distance The distance to move by
+     * @param tolerance The distance tolerance for the path (ending condition)
+     * @param speed_factor The speed factor for the movement
+     */
+    void forward(double distance, double tolerance = 5.0, double speed_factor = 1.0);
 };
 
 #endif
-
-
-
-/*
-- BotBase();
-- BotBase(AbstractMotorGroup* left, AbstractMotorGroup* right, double base_width, double wheel_radius, double pursuit_distance, double gear_multiplier, int thread_sleep);
-
-- BotBase& set_left(AbstractMotorGroup* left);
-- BotBase& set_right(AbstractMotorGroup* right);
-- template<typename... Args> 
-    BotBase& set_left(vex::motor* m1, Args ... m);
-- BotBase& set_left(vex::motor* m1);
-- template<typename... Args>
-    BotBase& set_right(vex::motor* m1, Args ... m);
-- BotBase& set_right(vex::motor* m1);
-
-- BotBase& set_base_width(double base_width);
-- BotBase& set_wheel_radius(double wheel_radius);
-- BotBase& set_pursuit_distance(double pursuit_distance);
-- BotBase& set_gear_multiplier(double gear_multiplier);
-- BotBase& set_thread_sleep(int thread_sleep);
-
-- void follow_path(std::vector<double> x, std::vector<double> y, double tolerance, int num_points);
-- void follow_path(Path path, double tolerance);
-
-- void turn_to(double angle);
-- void turn(double angle);
-
-- void move(double x, double y, double tolerance);
-- void fwd(double distance, double tolerance);
-- void bwd(double distance, double tolerance);
-*/

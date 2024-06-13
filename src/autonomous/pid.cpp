@@ -24,7 +24,7 @@ PID::PID(double kp, double ki, double kd, double minimum_output, double maximum_
 void PID::set_target(double target) {
     this -> target = target;
     this -> integral = 0.0; 
-    this -> last_error = 0.0; 
+    this -> last_error = 0.0;
 }
 
 double PID::calculate(double value) {

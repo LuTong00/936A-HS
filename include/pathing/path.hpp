@@ -38,6 +38,38 @@ public:
        within the constructor.
     */
     Path(std::vector<double> x, std::vector<double> y, int num_points = 100);
+
+    /**
+     * @brief Get the segment of the path that the point is on.
+     * @param point The point to check.
+     * @return The segment of the path that the point is on.
+     */
+    int get_segment(Point point);
+
+    /**
+     * @brief Get the segment of the path that the point is on.
+     * @param x The x-coordinate of the point.
+     * @param y The y-coordinate of the point.
+     * @return The segment of the path that the point is on.
+     */
+    int get_segment(double x, double y);
+
+    /**
+     * @brief Get the distance to the end of the path from the point.
+     * @param point The point to check.
+     * @return The distance to the end of the path from the point.
+     */
+    double distance_to_end(Point point);
+
+    /**
+     * @brief Get the distance to the end of the path from the point.
+     * @param x The x-coordinate of the point.
+     * @param y The y-coordinate of the point.
+     * @return The distance to the end of the path from the point.
+     */
+    double distance_to_end(double x, double y);
+
+    Point closest_point(double x, double y);
 };
 
 #endif

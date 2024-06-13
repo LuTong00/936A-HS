@@ -8,6 +8,7 @@
  * @brief The PurePursuit class to follow a path.
 */
 class PurePursuit {
+public:
     /**
      * @brief The path to follow, interpolated from waypoints.
     */
@@ -18,8 +19,6 @@ class PurePursuit {
      * @attention The units must be consistent with the units for odometry.
     */
     double lookahead;
-
-public:
     /**
      * @brief The constructor for the PurePursuit class.
      * @param path The path to follow, as a Path object.

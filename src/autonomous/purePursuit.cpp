@@ -12,6 +12,19 @@ double& PurePursuit::lookahead_distance() {
 }
 
 Point PurePursuit::get_target(double x_bot, double y_bot) {
+    // If the robot is very close to the end, return the end point
+    double min_distance = 1e9; // Find the point closest to the robot
+    int min_index = 0;
+    for (int i = 0; i < path.points.size(); ++i) {
+        double distance = sqrt((path.points[i].x - x_bot) * (path.points[i].x - x_bot) + (path.points[i].y - y_bot) * (path.points[i].y - y_bot));
+        if (distance < min_distance) {
+            min_distance = distance;
+            min_index = i;
+        }
+    }
+    if (path.distance_to_end(path.points[min_index]) < lookahead) {
+        return path.points[path.points.size() - 1];
+    }
     // Solve for the intersection between a circle and a line segment; iterate in reverse
     for (int i = path.points.size() - 1; i > 0; --i) {
         double x1, y1, x2, y2;
@@ -81,8 +94,8 @@ Point PurePursuit::get_target(double x_bot, double y_bot) {
         }
     }
     // If no points are found, look for the nearest Point
-    double min_distance = 1e9;
-    int min_index = 0;
+    min_distance = 1e9;
+    min_index = 0;
     for (int i = 0; i < path.points.size(); ++i) {
         double distance = sqrt((path.points[i].x - x_bot) * (path.points[i].x - x_bot) + (path.points[i].y - y_bot) * (path.points[i].y - y_bot));
         if (distance < min_distance) {
@@ -100,7 +113,11 @@ std::pair<double, double> PurePursuit::get_relative_steering(double x_bot, doubl
     double angle = atan2(dy, dx); // Calculate the argument of the relative vector
     double alpha = angle - theta_bot; // Calculate the relative angle
     double sine = sin(alpha); // Calculate the sine of the relative angle
-    double central_radius = lookahead / sine * 0.5; // Calculate the central radius
+    if (sine == 0) {
+        return std::make_pair(50.0, 50.0);
+    }
+    double distance = sqrt(dx * dx + dy * dy); // Calculate the distance to the target
+    double central_radius = distance / sine * 0.5; // Calculate the central radius
     
     // Calculate steering values
     double left_steering = central_radius - width_bot * 0.5; 
