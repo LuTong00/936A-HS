@@ -59,10 +59,19 @@ public:
      * @param wheel_radius The radius of the wheel
      * @param pursuit_distance The look-ahead distance
      * @param gear_multiplier The gear multiplier
+     * @param kp The proportional gain constant
+     * @param ki The integral gain constant
+     * @param kd The derivative gain constant
+     * @param minimum_output The absolute value of the minimum output of the PID controller
+     * @param maximum_output The absolute value of the maximum output of the PID controller
+     * @param gamma The integral discount value of the PID controller (earlier values get "forgotten")
+     * @param initial_x The initial x-coordinate of the robot
+     * @param initial_y The initial y-coordinate of the robot
+     * @param initial_rotation The initial rotation of the robot
      * @param thread_sleep The sleep time for the tracking thread, in microseconds
      * @attention Ensure that the distance measurements are in consistent units as odometry.
     */
-    BotBase(AbstractMotorGroup* left, AbstractMotorGroup* right, double base_width, double wheel_radius, double pursuit_distance, double gear_multiplier, int thread_sleep = 10);
+    BotBase(AbstractMotorGroup* left, AbstractMotorGroup* right, double base_width, double wheel_radius, double pursuit_distance, double gear_multiplier, double initial_x = 0.0, double initial_y = 0.0, double initial_rotation = 0.0, int thread_sleep = 10);
 
     /**
      * @brief Follow the path interpolated by the given coordinates
@@ -104,5 +113,7 @@ public:
      */
     void forward(double distance, double tolerance = 5.0, double speed_factor = 1.0);
 };
+
+void coordinate_display(void * b);
 
 #endif

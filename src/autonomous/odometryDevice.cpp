@@ -91,3 +91,9 @@ double Odometry::y() {
 double Odometry::rotation() {
     return Odometry::rotation_value;
 }
+
+void Odometry::set_pose(double x, double y, double rotation) {
+    Odometry::x_position = x;
+    Odometry::y_position = y;
+    Odometry::rotation_value = rotation;
+}

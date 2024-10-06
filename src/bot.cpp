@@ -1,11 +1,14 @@
 #include <bot.hpp>
 
 BotBase::BotBase(AbstractMotorGroup* left, AbstractMotorGroup* right, 
-                 double base_width, double wheel_radius, double pursuit_distance, double gear_multiplier, int thread_sleep): 
+                 double base_width, double wheel_radius, double pursuit_distance, double gear_multiplier, 
+                 double initial_x, double initial_y, double initial_rotation, int thread_sleep): 
                     left(left), right(right),
                     odom(left, right, base_width, wheel_radius, gear_multiplier, thread_sleep),
                     base_width(base_width), wheel_radius(wheel_radius), pursuit_distance(pursuit_distance), gear_multiplier(gear_multiplier), 
-                    thread_sleep(thread_sleep) {}
+                    thread_sleep(thread_sleep) {
+    odom.set_pose(initial_x, initial_y, initial_rotation);
+}
 
 void BotBase::follow_path(std::vector<double> x, std::vector<double> y, double tolerance, double speed_factor, int num_points) {
     Path path(x, y, num_points);
@@ -20,7 +23,7 @@ void BotBase::follow_path(Path path, double tolerance, double speed_factor) {
         auto steering = pursuit.get_relative_steering(odom.x(), odom.y(), odom.rotation(), base_width);
         left -> spin(vex::fwd, steering.first * speed_factor, vex::pct);
         right -> spin(vex::fwd, steering.second * speed_factor, vex::pct);
-        vex::this_thread::sleep_for(25);
+        vex::this_thread::sleep_for(thread_sleep);
     }
     left -> stop();
     right -> stop();
@@ -38,13 +41,14 @@ void BotBase::turn_to(double angle, double tolerance) {
 
 void BotBase::turn(double angle, double tolerance) {
     double target = odom.rotation() + angle;
-    PID pid(20.0, 0.1, 0.25, 1.0, 100.0, 0.9999);
+    //PID pid(15.0, 0.001, 25.0, 1.0, 100.0, 0.9999); // kp, ki, kd, min, max, gamma
+    PID pid(45.0, 0.0025, 10.0, 0, 100, 0.9999); // kp, ki, kd, min, max, gamma
     pid.set_target(target);
     while (fabs(odom.rotation() - target) > tolerance) {
         double output = pid.calculate(odom.rotation());
         left -> spin(vex::fwd, -output, vex::pct);
         right -> spin(vex::fwd, output, vex::pct);
-        vex::this_thread::sleep_for(50);
+        vex::this_thread::sleep_for(thread_sleep);
     }
     left -> stop();
     right -> stop();
@@ -55,4 +59,15 @@ void BotBase::forward(double distance, double tolerance, double speed_factor) {
     double rotation = odom.rotation();
     double x2 = x1 + distance * cos(rotation), y2 = y1 + distance * sin(rotation);
     follow_path({x1, x2}, {y1, y2}, tolerance, speed_factor, 50);
+}
+
+void coordinate_display(void* b) {
+    BotBase * base = (BotBase *) b;
+    //printf("[");
+    while (true) {
+        printf("(%.5f, %.5f, %.5f),\n", base -> odom.x(), base -> odom.y(), base -> odom.rotation());
+        //printf("(%.5f, %.5f)\n", base -> odom.x(), base -> odom.y());
+        vex::this_thread::sleep_for(50);
+    }
+    return;
 }

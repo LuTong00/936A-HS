@@ -186,6 +186,14 @@ public:
      * @return The rotation as a double, in radians.
     */
     double rotation();
+
+    /**
+     * @brief Set the position and rotation of the robot.
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @param rotation The rotation, in radians.
+     */
+    void set_pose(double x, double y, double rotation);
 };
 
 #endif
