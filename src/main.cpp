@@ -33,7 +33,7 @@ int main() {
 
     #if MODE != 2
     autonomous_task();
-    control_task();
+    //control_task();
     #else
     vex::competition competition;
     competition.autonomous(autonomous_task);
