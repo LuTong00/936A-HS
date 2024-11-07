@@ -18,9 +18,9 @@
 
 // Modes and keybinds
 #define brakeMode vex::brakeType::brake
-#define intakeKeybind controller.ButtonA
-#define outtakeKeybind controller.ButtonX
-#define pneumaticKeybind controller.ButtonY
+#define intakeKeybind controller.ButtonR1
+#define outtakeKeybind controller.ButtonR2
+#define pneumaticKeybind controller.ButtonA
 
 vex::brain brain;
 vex::controller controller;
