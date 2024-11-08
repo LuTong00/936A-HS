@@ -9,7 +9,7 @@ int main() {
     vexDelay(1); // DO NOT REMOVE!!! IMPORTANT FOR ODOMETRY TO ZERO
 
     #if MODE != 2
-    autonomous_task();
+    // autonomous_task();
     control_task();
     #else
     vex::competition competition;
@@ -36,12 +36,28 @@ void autonomous_task() {
     printf(" aaron pooped :O\n");
 }
 
+double linear_throttling(double linear_input) {
+    double output;
+    int sign = linear_input / fabs(linear_input);
+    linear_input = fabs(linear_input);
+    if (linear_input <= 65) {
+        output = pow(1.05, linear_input); 
+    }
+    else {
+        output = linear_input;
+    }
+    printf(" ericsson pooped\n");
+    return output * sign; 
+}
+
 void control_task() {
     double linear_speed, turn_speed, left_speed, right_speed;
     bool last_pneumatic = false, pneumatic_engaged = false;
+    double turn_sens = 0.5;
     while (true) {
-        linear_speed = controller.Axis3.position();
-        turn_speed = controller.Axis1.position();
+        linear_speed = linear_throttling(controller.Axis3.position());
+        turn_speed = linear_throttling(controller.Axis1.position());
+
         left_speed = linear_speed + turn_speed;
         right_speed = linear_speed - turn_speed;
         if (fabs(left_speed) > 0.5) {
