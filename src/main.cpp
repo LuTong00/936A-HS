@@ -45,6 +45,7 @@ double linear_throttling(double linear_input) {
     else {
         output = linear_input;
     }
+    printf(" ericsson pooped\n");
     return output * sign; 
 }
 
