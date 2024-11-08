@@ -33,6 +33,7 @@ void autonomous_task() {
     //vexDelay(2 SEC);
     //base.forward(35, 1.0, 0.1);
     //base.turn_to(450 DEG, 2.5 DEG, 0.25);
+    printf(" aaron pooped :O\n");
 }
 
 void control_task() {
