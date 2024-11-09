@@ -34,6 +34,38 @@ vex::motor lm1(vex::PORT3, vex::ratio6_1, true), lm2(vex::PORT2, vex::ratio6_1, 
 vex::motor intake_hook(vex::PORT14, vex::ratio18_1, false), intake_roller(vex::PORT20, vex::ratio18_1, true);
 vex::pneumatics mobile_goal(brain.ThreeWirePort.A);
 AbstractMotorGroup right(&rm1, &rm2, &rm3), left(&lm1, &lm2, &lm3);
+
+// auton side selection
+
+int is_red_side = -1; // set to -1 to check its set to something
+int is_far_side = -1; // set to -1 to check its set to something
+
+int auton_id = -1;
+
+/*
+    auton_id:
+        * -1 - beep boop error
+        *  0 - blue near
+        *  1 - blue far
+        *  2 - red near
+        *  3 - red far
+*/
+
+vex::limit right_switch(brain.ThreeWirePort.B); // red/far
+vex::limit left_switch(brain.ThreeWirePort.B);  // blue/near
+
+/*
+    There will be 2 presses:
+    First press will indicate side: 
+        Right - Red side
+        Left  - Blue side
+    Second press will indicate far/near side auton:
+        Right - Far side
+        Left  - Near side
+*/
+
+// click both to reset
+
 #endif
 BotBase base (
     &left, &right, /* Motor groups */ 

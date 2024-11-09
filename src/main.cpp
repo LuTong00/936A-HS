@@ -12,6 +12,58 @@ int main() {
     // autonomous_task();
     control_task();
     #else
+    bool is_first_press = 1;
+    while(is_red_side == -1 || is_far_side == -1) {
+        if (left_switch.pressing() && right_switch.pressing()) {
+            //reset
+            is_red_side = -1;
+            is_far_side = -1; 
+            is_first_press = 1;
+            vexDelay(300); // debounce
+            continue;
+        }
+
+        if (is_first_press) {
+            if (left_switch.pressing()) {
+                is_red_side = false;
+                is_first_press = false;
+                vexDelay(300); // debounce
+            }
+            if (right_switch.pressing()) {
+                is_red_side = true;
+                is_first_press = false;
+                vexDelay(300); // debounce
+            }
+        }
+
+        if (!is_first_press) {
+            if (left_switch.pressing()) {
+                is_far_side = false;
+                vexDelay(300); // debounce
+            }
+            if (right_switch.pressing()) {
+                is_far_side = true;
+                vexDelay(300); // debounce
+            }
+        }
+        /*
+            Case 1: Blue Side (0), Near Side (0)
+            (0 << 1) | 0 = 00 | 0 = 0
+            
+            Case 2: Blue Side (0), Far Side (1)
+            (0 << 1) | 1 = 00 | 1 = 1
+            
+            Case 3: Red Side (1), Near Side (0)
+            (1 << 1) | 0 = 10 | 0 = 2
+            
+            Case 4: Red Side (1), Far Side (1)
+            (1 << 1) | 1 = 10 | 1 = 3
+        */
+        vexDelay(10);    
+    }
+    assert(is_red_side != -1);
+    assert(is_far_side != -1);
+    auton_id = (is_red_side << 1) | is_far_side;
     vex::competition competition;
     competition.autonomous(autonomous_task);
     competition.drivercontrol(control_task);
