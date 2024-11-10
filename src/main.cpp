@@ -89,18 +89,6 @@ void control_task() {
             pneumatic_engaged = not pneumatic_engaged;
         }
         last_pneumatic = pneumaticKeybind.pressing();
-
-        if (Optical.isNearObject())
-        {
-            vex::color detectColor=Optical.color();
-            if(detectColor==vex::blue) //temp color
-            {
-                intake_hook.stop(brakeMode);
-                intake_roller.stop(brakeMode);
-                vexDelay(5);
-            }
-        }
-
         vex::this_thread::sleep_for(10);
     }
 }

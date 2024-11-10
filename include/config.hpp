@@ -33,7 +33,6 @@ vex::motor rm1(vex::PORT13, vex::ratio6_1, false), rm2(vex::PORT12, vex::ratio6_
 vex::motor lm1(vex::PORT3, vex::ratio6_1, true), lm2(vex::PORT2, vex::ratio6_1, true), lm3(vex::PORT1, vex::ratio6_1, true);
 vex::motor intake_hook(vex::PORT14, vex::ratio18_1, false), intake_roller(vex::PORT20, vex::ratio18_1, true);
 vex::pneumatics mobile_goal(brain.ThreeWirePort.A);
-vex::optical Optical(vex::PORT4);
 AbstractMotorGroup right(&rm1, &rm2, &rm3), left(&lm1, &lm2, &lm3);
 #endif
 BotBase base (
