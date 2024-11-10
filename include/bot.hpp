@@ -95,15 +95,17 @@ public:
      * @brief Turn to the given angle
      * @param angle The angle to turn to, in radians
      * @param tolerance The angle tolerance for the path, in radians (ending condition)
+     * @param speed_factor The speed factor for the movement
     */
-    void turn_to(double angle, double tolerance = 0.01);
+    void turn_to(double angle, double tolerance = 0.01, double speed_factor = 1.0);
 
     /**
      * @brief Turn by the given angle
      * @param angle The angle to turn by, in radians
      * @param tolerance The angle tolerance for the path, in radians (ending condition)
+     * @param speed_factor The speed factor for the movement
     */
-    void turn(double angle, double tolerance = 0.01);
+    void turn(double angle, double tolerance = 0.01, double speed_factor = 1.0);
 
     /**
      * @brief Move the robot by the given distance

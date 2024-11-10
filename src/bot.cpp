@@ -29,23 +29,23 @@ void BotBase::follow_path(Path path, double tolerance, double speed_factor) {
     right -> stop();
 }
 
-void BotBase::turn_to(double angle, double tolerance) {
+void BotBase::turn_to(double angle, double tolerance, double speed_factor) {
     static auto nearest_coterminal = [] (double rotation, double target) -> double {
         static double pi2 = M_PI * 2, divpi2 = 1 / pi2;
         return floor((rotation - target + M_PI) * divpi2) * pi2 + target;
     };
     double target_rotation = nearest_coterminal(odom.rotation(), angle);
     double change = target_rotation - odom.rotation();
-    turn(change, tolerance);
+    turn(change, tolerance, speed_factor);
 }
 
-void BotBase::turn(double angle, double tolerance) {
+void BotBase::turn(double angle, double tolerance, double speed_factor) {
     double target = odom.rotation() + angle;
     //PID pid(15.0, 0.001, 25.0, 1.0, 100.0, 0.9999); // kp, ki, kd, min, max, gamma
     PID pid(45.0, 0.0025, 10.0, 0, 100, 0.9999); // kp, ki, kd, min, max, gamma
     pid.set_target(target);
     while (fabs(odom.rotation() - target) > tolerance) {
-        double output = pid.calculate(odom.rotation());
+        double output = pid.calculate(odom.rotation()) * speed_factor;
         left -> spin(vex::fwd, -output, vex::pct);
         right -> spin(vex::fwd, output, vex::pct);
         vex::this_thread::sleep_for(thread_sleep);
