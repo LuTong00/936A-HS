@@ -68,16 +68,3 @@ double Path::distance_to_end(double x, double y) {
     }
     return distance;
 }
-
-Point Path::closest_point(double x, double y) {
-    int min_distance = 1e9;
-    Point closest;
-    for (int i = 0; i < points.size(); ++i) {
-        double distance = sqrt((x - points[i].x) * (x - points[i].x) + (y - points[i].y) * (y - points[i].y));
-        if (distance < min_distance) {
-            min_distance = distance;
-            closest = points[i];
-        }
-    }
-    return closest;
-}
