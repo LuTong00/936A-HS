@@ -87,7 +87,8 @@ First-time setup:
 3. Under the VEX Extension, select "New Project" and create a blank C++ project (without spaces). VEX will automatically configure makefiles, the `vex` folder, and the `.vscode` properties.
 4. In MacOS Terminal, navigate to `~/Documents/vex-vscode-projects/` by entering `cd ~/Documents/vex-vscode-projects/<insert project name here>`.
 5. Set up a new git repository and link to remote by entering `git init` and `git remote add origin <insert link to this repository here>`.
-6. Pull the code by entering `git pull origin <insert branch name here>`. The default branch is called `main`.
+6. Remove conflicting files bt entering `rm .gitignore`, `rm ./src/main.cpp`, and `git add .` 
+7. Pull the code by entering `git pull origin <insert branch name here>`. The default branch is called `main`.
 
 Pushing code:
 1. Ensure that you are on the correct directory with `cd ~/Documents/vex-vscode-projects/<insert project name here>`.
