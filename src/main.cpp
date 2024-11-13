@@ -7,20 +7,42 @@
 
 int main() {
     vexDelay(1); // DO NOT REMOVE!!! IMPORTANT FOR ODOMETRY TO ZERO
+    printf("hi\n");
 
     #if MODE != 2
     // autonomous_task();
     control_task();
     #else
+    vexDelay(1); // DO NOT REMOVE!!! IMPORTANT FOR ODOMETRY TO ZERO
     bool is_first_press = 1;
+    bool left_pressed = false;
+    bool right_pressed = false;
+
     while(is_red_side == -1 || is_far_side == -1) {
-        if (left_switch.pressing() && right_switch.pressing()) {
-            //reset
-            is_red_side = -1;
-            is_far_side = -1; 
-            is_first_press = 1;
-            vexDelay(300); // debounce
-            continue;
+        // reset condition (both buttons)
+        if (left_switch.pressing()) {
+            // Wait a short time to see if the other button is also pressed
+            vexDelay(50);  // 50ms window to detect second button
+            if (right_switch.pressing()) {
+                //reset
+                is_red_side = -1;
+                is_far_side = -1; 
+                is_first_press = 1;
+                vexDelay(300); // debounce
+                continue;
+            }
+        }
+        else if (right_switch.pressing()) {
+            // short time to see if the other button is also pressed
+            vexDelay(50);  // 50ms window to detect second button
+            if (left_switch.pressing()) {
+                //reset
+                is_red_side = -1;
+                is_far_side = -1; 
+                is_first_press = 1;
+                vexDelay(300); // debounce
+                continue;
+            }
         }
 
         if (is_first_press) {
@@ -46,26 +68,17 @@ int main() {
                 vexDelay(300); // debounce
             }
         }
-        /*
-            Case 1: Blue Side (0), Near Side (0)
-            (0 << 1) | 0 = 00 | 0 = 0
-            
-            Case 2: Blue Side (0), Far Side (1)
-            (0 << 1) | 1 = 00 | 1 = 1
-            
-            Case 3: Red Side (1), Near Side (0)
-            (1 << 1) | 0 = 10 | 0 = 2
-            
-            Case 4: Red Side (1), Far Side (1)
-            (1 << 1) | 1 = 10 | 1 = 3
-        */
+        
         vexDelay(10);    
     }
+
     assert(is_red_side != -1);
     assert(is_far_side != -1);
     auton_id = (is_red_side << 1) | is_far_side;
+    printf("red side = %d, Far side = %d\n", is_red_side, is_far_side);
+    printf("auton_id = %d\n", auton_id);
     vex::competition competition;
-    competition.autonomous(autonomous_task);
+    // competition.autonomous(autonomous_task);
     competition.drivercontrol(control_task);
     #endif
 

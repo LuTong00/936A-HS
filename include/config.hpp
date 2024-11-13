@@ -4,7 +4,7 @@
     * 2- competition (6 motors)
     * Any other mode will result in compilation error
 */
-#define MODE 1
+#define MODE 2
 
 #define PAUSE(x) vexDelay(x);
 #define SEC * 1000
@@ -51,8 +51,8 @@ int auton_id = -1;
         *  3 - red far
 */
 
-vex::limit right_switch(brain.ThreeWirePort.B); // red/far
-vex::limit left_switch(brain.ThreeWirePort.B);  // blue/near
+vex::bumper right_switch(brain.ThreeWirePort.B); // red/far
+vex::bumper left_switch(brain.ThreeWirePort.C);  // blue/near
 
 /*
     There will be 2 presses:
