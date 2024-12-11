@@ -7,8 +7,8 @@ Welcome to the HKIS Robotics Club's codebase for VEX Robotics using the VEX V5 s
 Main author: Jiahong (Ericsson) Lin- `ericssonl07` (HKIS Class of 2025)
 Contributors:
 - Qi (Aaron) You- `coon-hound` (HKIS Class of 2025)
-- Qinan (Andy) Liu- `PhantomKing99999` (HKIS Class of 2024)
-- Lucas Tong- `PyroDrugs` (HKIS Class of 2024)
+- Qinan (Andy) Liu- `PhantomKing99999` (HKIS Class of 2026
+- Lucas Tong- `PyroDrugs` (HKIS Class of 2026)
 - Yushin Chang- `orangeskyy` (HKIS Class of 2028)
 - Jiaying (Niu Niu) Fan- `purpleskyeee` (HKIS Class of 2028)
 
